@@ -18,7 +18,7 @@ class Queue:
 	def enQueue(self, item):
 		if self.isFull():
 			return False
-		self.rear += 1
+		self.rear = (self.rear + 1) % self.maxQueueSize
 		self.queue[self.rear] = item
 		return True
 
@@ -29,29 +29,29 @@ class Queue:
 
 		item = self.queue[self.front]
 		self.queue[self.front] = self.__emptyString
-		self.front += 1
+		self.front = (self.front + 1) % self.maxQueueSize
 		return item
 
 	""" A function that indicates whether the queue is empty! """
 	def isEmpty(self):
-		if self.rear == self.front - 1:
+		if (self.front - 1) % self.maxQueueSize == self.rear % self.maxQueueSize and self.queue[self.front] == "empty":
 			return True
 		return False
 
 	""" A function that indicates whether the queue is max! """
 	def isFull(self):
-		if (self.rear - self.front) == self.maxQueueSize - 1 :
+		if (self.rear - self.front) == self.maxQueueSize - 1:
 			return True
 		return False
 
 
 nq = Queue()
-nq.enQueue("HEY JOSH")
 
-for i in range(5):
+for i in range(nq.maxQueueSize):
 	nq.enQueue(i)
 
 print(nq.queue)
+print("is full", nq.isFull())
 
 while not nq.isEmpty():
 	print("- - - - - - - - -")
@@ -61,7 +61,4 @@ while not nq.isEmpty():
 	print("Rear >", nq.rear)
 	input(">")
 
-nq.enQueue("test")
-print(nq.queue)
-print(nq.deQueue())
-print(nq.queue)
+print("is empty", nq.isEmpty())
